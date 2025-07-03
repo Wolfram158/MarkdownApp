@@ -1,6 +1,6 @@
 package com.vk.markdown.cache
 
-class LRUCache<K : Any, V : Any>(private val capacity: Int) : Cache<K, V> {
+class LruCache<K : Any, V : Any>(private val capacity: Int) : Cache<K, V> {
     private class Node<K, V>(var key: K?, var value: V?) {
         constructor() : this(null, null)
 

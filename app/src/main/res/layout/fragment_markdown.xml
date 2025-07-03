@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:contentDescription="@string/scrollview"
+    android:contentDescription="@string/linear_layout"
+    android:orientation="vertical"
     tools:context=".presentation.MarkdownFragment">
 
-    <LinearLayout
-        android:id="@+id/scrollable_layout"
+    <EditText
+        android:id="@+id/edit_md"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/empty"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:isScrollContainer="true"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/scrollview">
+
+        <LinearLayout
+            android:id="@+id/scrollable_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/edit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:text="@string/edit"
+        android:textSize="24sp" />
 
-</ScrollView>
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
+</LinearLayout>
 

@@ -1,7 +1,7 @@
 package com.vk.markdown.di
 
 import com.vk.markdown.builder.Builder
-import com.vk.markdown.cache.LRUCache
+import com.vk.markdown.cache.LruCache
 import com.vk.markdown.data.repository.MarkdownFileRepositoryImpl
 import com.vk.markdown.domain.repository.MarkdownFileRepository
 import com.vk.markdown.domain.usecase.DownloadImageUseCase
@@ -14,7 +14,7 @@ object AppComponent {
     private const val CACHE_CAPACITY = 8
 
     fun inject(app: App) {
-        val cache = LRUCache<String, ByteArray>(CACHE_CAPACITY)
+        val cache = LruCache<String, ByteArray>(CACHE_CAPACITY)
         val downloader = NetDownloader(cache)
         val markdownFileRepository: MarkdownFileRepository = MarkdownFileRepositoryImpl(downloader)
         val downloadImageUseCase = DownloadImageUseCase(markdownFileRepository)

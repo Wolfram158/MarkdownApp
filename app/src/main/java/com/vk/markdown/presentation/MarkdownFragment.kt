@@ -3,10 +3,10 @@ package com.vk.markdown.presentation
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -39,6 +39,9 @@ class MarkdownFragment : Fragment() {
         }
     }
 
+    private var runnable: Runnable? = null
+    private var text: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,8 +53,32 @@ class MarkdownFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeViewModel()
-        loadFile()
+        if (savedInstanceState == null) {
+            observeViewModel()
+            setOnChangeModeListener()
+            loadFile()
+        }
+    }
+
+    private fun setOnChangeModeListener() {
+        binding.editButton.setOnClickListener {
+            it?.visibility = View.GONE
+            binding.saveButton.visibility = View.VISIBLE
+            binding.scrollableLayout.removeAllViews()
+            binding.editMd.visibility = View.VISIBLE
+            text?.let {
+                binding.editMd.setText(it, TextView.BufferType.EDITABLE)
+            }
+        }
+        binding.saveButton.setOnClickListener {
+            it?.visibility = View.GONE
+            binding.editButton.visibility = View.VISIBLE
+            binding.editMd.visibility = View.GONE
+            text = binding.editMd.text.toString()
+            text?.let { text ->
+                builder.buildFromString(text, binding.scrollableLayout)
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -75,7 +102,7 @@ class MarkdownFragment : Fragment() {
         if (wayOrLink == BY_FILE_SYSTEM) {
             val contract = ActivityResultContracts.OpenDocument()
             val launcher = registerForActivityResult(contract) {
-                val text = it?.let { uri ->
+                text = it?.let { uri ->
                     context?.contentResolver?.openInputStream(uri).use { istream ->
                         istream?.bufferedReader().use { br -> br?.readText() }
                     }
@@ -88,8 +115,14 @@ class MarkdownFragment : Fragment() {
         } else {
             wayOrLink?.let { link ->
                 markdownFileViewModel.loadFile(link) { text ->
-                    handler.post {
-                        builder.buildFromString(text, binding.scrollableLayout)
+                    this.text = text
+                    runnable = object : Runnable {
+                        override fun run() {
+                            builder.buildFromString(text, binding.scrollableLayout)
+                        }
+                    }
+                    runnable?.let {
+                        handler.post(it)
                     }
                 }
             }
@@ -98,8 +131,10 @@ class MarkdownFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         builder.setContext(null)
+        runnable?.let {
+            handler.removeCallbacks(it)
+        }
     }
 
     companion object {
