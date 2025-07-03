@@ -2,16 +2,15 @@ package com.vk.markdown.presentation
 
 import android.app.Application
 import com.vk.markdown.di.AppComponent
-import com.vk.markdown.domain.usecase.DownloadImageUseCase
 
 class App : Application() {
-    private lateinit var downloadImageUseCase: DownloadImageUseCase
+    private lateinit var viewModelFactory: ViewModelFactory
 
-    fun setDownloadImageUseCase(downloadImageUseCase: DownloadImageUseCase) {
-        this.downloadImageUseCase = downloadImageUseCase
+    fun setViewModelFactory(viewModelFactory: ViewModelFactory) {
+        this.viewModelFactory = viewModelFactory
     }
 
-    fun getDownloadImageUseCase() = downloadImageUseCase
+    fun getViewModelFactory() = viewModelFactory
 
     override fun onCreate() {
         super.onCreate()

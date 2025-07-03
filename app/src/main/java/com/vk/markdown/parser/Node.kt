@@ -1,7 +1,5 @@
 package com.vk.markdown.parser
 
-import kotlin.collections.joinToString
-
 sealed class Node {
     var content: List<Node> = listOf()
 
@@ -26,12 +24,8 @@ class Strike() : Node()
 
 class Cursive() : Node()
 
-class Table(val cells: List<List<Node>>): Node()
+class Table(val cells: List<List<Node>>) : Node()
 
-class Img() : Node() {
-    companion object {
-        data class ImgInfo(val description: String, val link: String)
-    }
-}
+class Img(val description: String, val link: String) : Node()
 
 data class Text(val text: String) : Node()

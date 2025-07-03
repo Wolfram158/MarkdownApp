@@ -22,9 +22,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        launchChooseFragment()
+    }
+
+    private fun launchChooseFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, ChooseFragment()).commit()
     }
-
 
 }

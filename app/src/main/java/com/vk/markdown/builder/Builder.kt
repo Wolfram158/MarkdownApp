@@ -28,7 +28,7 @@ fun buildFromString(str: String): SpannableString {
     return SpannableString.valueOf(ssb)
 }
 
-fun buildFromNodes(
+private fun buildFromNodes(
     nodes: List<Node>,
     isBold: Boolean,
     isCursive: Boolean,
@@ -50,7 +50,7 @@ fun buildFromNodes(
     return SpannableString.valueOf(ssb)
 }
 
-fun buildFromNode(
+private fun buildFromNode(
     node: Node,
     isBold: Boolean,
     isCursive: Boolean,

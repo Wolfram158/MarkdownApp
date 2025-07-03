@@ -1,26 +1,32 @@
 package com.vk.markdown.presentation
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.os.Looper.getMainLooper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.vk.markdown.builder.buildFromString
+import androidx.lifecycle.ViewModelProvider
 import com.vk.markdown.databinding.FragmentMarkdownBinding
 import com.vk.markdown.net.NetDownloader
 import kotlin.concurrent.thread
-import androidx.core.graphics.scale
 
 class MarkdownFragment : Fragment() {
     private var _binding: FragmentMarkdownBinding? = null
     private val binding: FragmentMarkdownBinding
         get() = _binding ?: throw RuntimeException("FragmentMarkdownBinding is null")
+
+    private val handler = Handler(getMainLooper())
+
+    private val viewModelFactory by lazy {
+        (requireActivity().application as App).getViewModelFactory()
+    }
+
+    private val markdownFileViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[MarkdownFileViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +39,15 @@ class MarkdownFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val handler = Handler(getMainLooper())
-        thread {
-            val bytes = NetDownloader().download(
-                "https://raw.githubusercontent.com/arkivanov/" +
-                        "MVIKotlin/master/docs/media/logo/landscape/png/mvikotlin_coloured.png"
-            )
-            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes?.size!!)
-            handler.post {
-                binding.imageTest.setImageBitmap(bitmap)
+        markdownFileViewModel.downloadImage(
+            "https://raw.githubusercontent.com/arkivanov/" +
+                    "MVIKotlin/master/docs/media/logo/landscape/png/mvikotlin_coloured.png"
+        ) { bytes ->
+            bytes?.let {
+                val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+                handler.post {
+                    binding.imageTest.setImageBitmap(bitmap)
+                }
             }
         }
 //        val contract = ActivityResultContracts.OpenDocument()
@@ -56,6 +62,11 @@ class MarkdownFragment : Fragment() {
 //            }
 //        }
 //        launcher.launch(arrayOf("*/*"))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

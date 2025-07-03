@@ -24,6 +24,10 @@ class ChooseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
         binding.chooseFileButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(
@@ -31,6 +35,11 @@ class ChooseFragment : Fragment() {
                     MarkdownFragment()
                 ).addToBackStack(null).commit()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

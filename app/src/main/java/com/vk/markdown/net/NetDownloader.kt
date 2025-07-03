@@ -24,11 +24,11 @@ class NetDownloader(
         var connection: HttpsURLConnection? = null
         try {
             val url = URL(path)
-            connection = url.openConnection() as HttpsURLConnection?
-            connection?.setRequestMethod(method)
-            connection?.setReadTimeout(readTimeout)
-            connection?.connect()
-            stream = connection?.getInputStream()
+            connection = url.openConnection() as HttpsURLConnection
+            connection.setRequestMethod(method)
+            connection.setReadTimeout(readTimeout)
+            connection.connect()
+            stream = connection.getInputStream()
             val ba = stream?.readBytes()
             if (useCache) {
                 ba?.let {
