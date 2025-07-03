@@ -22,7 +22,7 @@ private val levelToTextSize =
 
 fun buildFromString(str: String): SpannableString {
     val ssb = SpannableStringBuilder()
-    for (node in parse(str)) {
+    parse(str).forEach { node ->
         ssb.append(buildFromNode(node, false, false, false))
     }
     return SpannableString.valueOf(ssb)

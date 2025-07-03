@@ -1,10 +1,11 @@
-package com.vk.markdown
+package com.vk.markdown.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.vk.markdown.R
 import com.vk.markdown.databinding.FragmentChooseBinding
 
 class ChooseFragment : Fragment() {

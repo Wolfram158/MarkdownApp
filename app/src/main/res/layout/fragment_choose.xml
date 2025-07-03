@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".ChooseFragment">
+    tools:context=".presentation.ChooseFragment">
 
     <Button
         android:id="@+id/choose_file_button"

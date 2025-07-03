@@ -1,10 +1,11 @@
-package com.vk.markdown
+package com.vk.markdown.presentation
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.vk.markdown.R
 import com.vk.markdown.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
