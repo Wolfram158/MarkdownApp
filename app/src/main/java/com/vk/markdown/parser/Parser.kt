@@ -6,6 +6,9 @@ fun parse(str: String): List<Node> {
     var rest = str
     val result = mutableListOf<Node>()
     val text = StringBuilder()
+    val description: Wrapper<String?> = Wrapper(null)
+    val link: Wrapper<String?> = Wrapper(null)
+    val position: Wrapper<Int?> = Wrapper(null)
     var isNewLine = true
 
     while (rest.isNotEmpty()) {
@@ -100,7 +103,17 @@ fun parse(str: String): List<Node> {
                 isNewLine = it.isNewLine
             }
         } else if (rest.length >= 5 && rest[0] == '|' && tryTable(rest) && isNewLine) {
-
+            TODO()
+        } else if (tryImage(rest, description, link, position)) {
+            freeText(text, result)
+            position.value?.let { pos ->
+                rest = rest.substring(pos)
+            }
+            val link = link.value
+            val description = description.value
+            if (link != null && description != null) {
+                result.add(Img(description = parse(description), link = link))
+            }
         } else {
             text.append(rest[0])
             isNewLine = isNewLine(rest, 0, isNewLine)
@@ -109,6 +122,57 @@ fun parse(str: String): List<Node> {
     }
     freeText(text, result)
     return result
+}
+
+private data class Wrapper<T>(private var _value: T) {
+    var value: T
+        get() = _value
+        set(value) {
+            _value = value
+        }
+}
+
+private fun tryImage(
+    str: String,
+    description: Wrapper<String?>,
+    link: Wrapper<String?>,
+    position: Wrapper<Int?>
+): Boolean {
+    if (str.length >= 5) {
+        if (str[0] != '!' && str[1] != '[') {
+            return false
+        }
+        val descriptionSb = StringBuilder()
+        var j = 2
+        while (j < str.length && str[j] != ']') {
+            if (str[j] == '\n') {
+                return false
+            }
+            descriptionSb.append(str[j])
+            j++
+        }
+        j++
+        if (j >= str.length || str[j] != '(') {
+            return false
+        }
+        j++
+        val linkSb = StringBuilder()
+        while (j < str.length && str[j] != ')') {
+            if (str[j] == '\n') {
+                return false
+            }
+            linkSb.append(str[j])
+            j++
+        }
+        if (j == str.length) {
+            return false
+        }
+        description.value = descriptionSb.toString()
+        link.value = linkSb.toString()
+        position.value = ++j
+        return true
+    }
+    return false
 }
 
 private fun tryTable(str: String): Boolean {

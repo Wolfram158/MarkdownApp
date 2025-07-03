@@ -26,6 +26,6 @@ class Cursive() : Node()
 
 class Table(val cells: List<List<Node>>) : Node()
 
-class Img(val description: String, val link: String) : Node()
+data class Img(val description: List<Node>, val link: String) : Node()
 
 data class Text(val text: String) : Node()

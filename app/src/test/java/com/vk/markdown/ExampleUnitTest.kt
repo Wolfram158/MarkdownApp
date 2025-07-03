@@ -3,6 +3,7 @@ package com.vk.markdown
 import com.vk.markdown.parser.Bold
 import com.vk.markdown.parser.Cursive
 import com.vk.markdown.parser.Header
+import com.vk.markdown.parser.Img
 import com.vk.markdown.parser.Strike
 import com.vk.markdown.parser.Text
 import com.vk.markdown.parser.parse
@@ -85,6 +86,38 @@ class ExampleUnitTest {
                                 })
                     }),
             parse("# A\n## B\n### C")
+        )
+    }
+
+    @Test
+    fun testImage() {
+        assertEquals(
+            listOf(
+                Img(
+                    link = "https://vk.com",
+                    description = listOf(
+                        Text("VKCOM")
+                    )
+                )
+            ),
+            parse("![VKCOM](https://vk.com)")
+        )
+    }
+
+    @Test
+    fun testImageBoldDescription() {
+        assertEquals(
+            listOf(
+                Img(
+                    link = "https://vk.com",
+                    description = listOf(
+                        Bold().apply {
+                            content = listOf(Text("VKCOM"))
+                        }
+                    )
+                )
+            ),
+            parse("![**VKCOM**](https://vk.com)")
         )
     }
 }
