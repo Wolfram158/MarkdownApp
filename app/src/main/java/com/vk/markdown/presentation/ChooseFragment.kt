@@ -32,7 +32,14 @@ class ChooseFragment : Fragment() {
             parentFragmentManager.beginTransaction()
                 .replace(
                     R.id.container,
-                    MarkdownFragment()
+                    MarkdownFragment.newInstance(MarkdownFragment.BY_FILE_SYSTEM)
+                ).addToBackStack(null).commit()
+        }
+        binding.chooseFileByLinkButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(
+                    R.id.container,
+                    MarkdownFragment.newInstance(binding.editMdUrl.text.toString())
                 ).addToBackStack(null).commit()
         }
     }
@@ -43,7 +50,7 @@ class ChooseFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             ChooseFragment().apply {
                 arguments = Bundle().apply {
                 }

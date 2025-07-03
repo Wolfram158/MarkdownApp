@@ -9,4 +9,8 @@ class MarkdownFileRepositoryImpl(
     override fun downloadImage(link: String): ByteArray? {
         return downloader.download(link, useCache = true)
     }
+
+    override fun loadFile(link: String): String {
+        return downloader.download(link, useCache = false)?.toString(Charsets.UTF_8) ?: ""
+    }
 }

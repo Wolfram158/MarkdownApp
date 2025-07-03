@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun launchChooseFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, ChooseFragment()).commit()
+            .replace(R.id.container, ChooseFragment.newInstance()).commit()
     }
 
 }

@@ -3,16 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".presentation.ChooseFragment">
 
     <Button
         android:id="@+id/choose_file_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_marginTop="128dp"
         android:text="@string/chooseFile"
         android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_md_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:autofillHints="false"
+            android:hint="@string/link_to_file"
+            android:inputType="textUri"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/choose_file_by_link_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/load_file"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

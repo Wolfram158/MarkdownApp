@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:contentDescription="@string/scrollview"
     tools:context=".presentation.MarkdownFragment">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/scrollable_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
-        <LinearLayout
-            android:id="@+id/scrollable_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+</ScrollView>
 
-
-
-        </LinearLayout>
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imageTest"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content" />-->
-
-        <!--<TextView
-            android:id="@+id/test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />-->
-
-    </ScrollView>
-
-</FrameLayout>

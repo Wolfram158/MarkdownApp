@@ -39,7 +39,7 @@ class Builder() {
         this.downloadImageUseCase = downloadImageUseCase
     }
 
-    fun setContext(context: Context) {
+    fun setContext(context: Context?) {
         this.context = context
     }
 
