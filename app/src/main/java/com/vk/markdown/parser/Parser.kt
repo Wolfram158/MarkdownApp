@@ -11,6 +11,10 @@ fun parse(str: String): List<Node> {
     val position: Wrapper<Int?> = Wrapper(null)
     var isNewLine = true
 
+//    if (rest == "") {
+//        result.add(Text(""))
+//    }
+
     while (rest.isNotEmpty()) {
         if (isNewLine && rest.length >= 2 && isPrefixConstant(
                 rest,
@@ -102,8 +106,9 @@ fun parse(str: String): List<Node> {
                 rest = rest.substring(it.end)
                 isNewLine = it.isNewLine
             }
-        } else if (rest.length >= 5 && rest[0] == '|' && tryTable(rest) && isNewLine) {
-            TODO()
+        } else if (tryTable(rest, isNewLine)) {
+            rest = parseTable(rest, result)
+            isNewLine = true
         } else if (tryImage(rest, description, link, position)) {
             freeText(text, result)
             position.value?.let { pos ->
@@ -130,6 +135,69 @@ private data class Wrapper<T>(private var _value: T) {
         set(value) {
             _value = value
         }
+}
+
+private val prefixTableRegex = "(\\|([^\n|]*))+\\|([ \t\r])*\n(\\|-+)+\\|([ \t\r])*\n.*"
+    .toRegex(RegexOption.DOT_MATCHES_ALL)
+private val rowTableRegex = "((\\|([^\n|]*))+\\|([ \t\r])*\n.*)|((\\|([^\n|]*))+\\|([ \t\r])*\\s*)"
+    .toRegex(RegexOption.DOT_MATCHES_ALL)
+private val separatorTableRegex = "(\\|-+)+\\|([ \t\r])*\n.*"
+    .toRegex(RegexOption.DOT_MATCHES_ALL)
+
+private fun tryTable(str: String, isNewLine: Boolean): Boolean {
+    return str.matches(prefixTableRegex) && isNewLine
+}
+
+private fun parseTable(str: String, result: MutableList<Node>): String {
+    var rest = str
+    var j = 0
+    val table = mutableListOf<List<List<Node>>>()
+    val rowCells = mutableListOf<List<Node>>()
+    val currentContent = StringBuilder()
+    var linesCount = 0
+    while (j < rest.length) {
+        if (rest[j] == '|') {
+            if (linesCount > 0) {
+                rowCells.add(parse(currentContent.toString()))
+                currentContent.setLength(0)
+            }
+            linesCount++
+            j++
+        } else if (rest[j] == '\n') {
+            linesCount = 0
+            table.add(rowCells.toList())
+            rowCells.clear()
+            currentContent.setLength(0)
+            j++
+            rest = if (j < rest.length) {
+                rest.substring(j)
+            } else {
+                ""
+            }
+            j = 0
+            if (rest.matches(separatorTableRegex)) {
+                while (j < rest.length && rest[j] != '\n') {
+                    j++
+                }
+                j++
+            } else if (!rest.matches(rowTableRegex)) {
+                break
+            }
+        } else {
+            currentContent.append(rest[j])
+            j++
+        }
+    }
+    rest = if (j < rest.length) {
+        rest.substring(j)
+    } else {
+        ""
+    }
+    if (rowCells.isNotEmpty()) {
+        table.add(rowCells.toList())
+    }
+    result.add(Table(table))
+    return rest
 }
 
 private fun tryImage(
@@ -172,10 +240,6 @@ private fun tryImage(
         position.value = ++j
         return true
     }
-    return false
-}
-
-private fun tryTable(str: String): Boolean {
     return false
 }
 

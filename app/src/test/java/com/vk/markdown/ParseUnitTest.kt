@@ -5,6 +5,7 @@ import com.vk.markdown.parser.Cursive
 import com.vk.markdown.parser.Header
 import com.vk.markdown.parser.Img
 import com.vk.markdown.parser.Strike
+import com.vk.markdown.parser.Table
 import com.vk.markdown.parser.Text
 import com.vk.markdown.parser.parse
 import org.junit.Assert.assertEquals
@@ -14,7 +15,7 @@ import org.junit.Test
 /**
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class ParseUnitTest {
     @Test
     fun testBold() {
         assertEquals(
@@ -118,6 +119,27 @@ class ExampleUnitTest {
                 )
             ),
             parse("![**VKCOM**](https://vk.com)")
+        )
+    }
+
+    @Test
+    fun testTable() {
+        assertEquals(
+            listOf(
+                Table(
+                    rows = listOf(
+                        listOf(
+                            listOf(Text("a")),
+                            listOf(Text("b"))
+                        ),
+                        listOf(
+                            listOf(Text("c")),
+                            listOf(Text("d"))
+                        )
+                    )
+                )
+            ),
+            parse("|a|b|\n|-|\n|c|d|")
         )
     }
 }

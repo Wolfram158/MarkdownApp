@@ -24,7 +24,7 @@ class Strike() : Node()
 
 class Cursive() : Node()
 
-class Table(val cells: List<List<Node>>) : Node()
+data class Table(val rows: List<List<List<Node>>>) : Node()
 
 data class Img(val description: List<Node>, val link: String) : Node()
 

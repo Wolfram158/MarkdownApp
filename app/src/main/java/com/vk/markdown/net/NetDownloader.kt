@@ -2,8 +2,8 @@ package com.vk.markdown.net
 
 import com.vk.markdown.cache.Cache
 import java.io.InputStream
+import java.net.HttpURLConnection
 import java.net.URL
-import javax.net.ssl.HttpsURLConnection
 
 class NetDownloader(
     private val cache: Cache<String, ByteArray>
@@ -21,10 +21,10 @@ class NetDownloader(
             }
         }
         var stream: InputStream? = null
-        var connection: HttpsURLConnection? = null
+        var connection: HttpURLConnection? = null
         try {
             val url = URL(path)
-            connection = url.openConnection() as HttpsURLConnection
+            connection = url.openConnection() as HttpURLConnection
             connection.setRequestMethod(method)
             connection.setReadTimeout(readTimeout)
             connection.connect()

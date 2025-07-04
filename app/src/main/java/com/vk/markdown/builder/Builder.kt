@@ -17,7 +17,10 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TableLayout
+import android.widget.TableRow
 import android.widget.TextView
+import com.vk.markdown.R
 import com.vk.markdown.domain.usecase.DownloadImageUseCase
 import com.vk.markdown.parser.Bold
 import com.vk.markdown.parser.Cursive
@@ -272,7 +275,28 @@ class Builder() {
                 }
             }
 
-            is Table -> TODO()
+            is Table -> {
+                val table = TableLayout(context)
+                node.rows.forEach { cells ->
+                    val row = TableRow(context)
+                    cells.forEach { cell ->
+                        val layout = LinearLayout(context)
+                        buildFromNodes(
+                            cell,
+                            isBold = isBold,
+                            isCursive = isCursive,
+                            isStrike = isStrike
+                        ).forEach { view ->
+                            layout.addView(view.apply {
+                                setBackgroundResource(R.drawable.cell_shape)
+                            })
+                        }
+                        row.addView(layout)
+                    }
+                    table.addView(row)
+                }
+                table
+            }
         }
     }
 }
