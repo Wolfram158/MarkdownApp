@@ -1,6 +1,6 @@
 package com.vk.markdown.di
 
-import com.vk.markdown.builder.Builder
+import com.vk.markdown.builder.MarkdownViewBuilder
 import com.vk.markdown.cache.LruCache
 import com.vk.markdown.data.repository.MarkdownFileRepositoryImpl
 import com.vk.markdown.domain.repository.MarkdownFileRepository
@@ -20,7 +20,7 @@ object AppComponent {
         val downloadImageUseCase = DownloadImageUseCase(markdownFileRepository)
         val loadFileUseCase = LoadFileUseCase(markdownFileRepository)
         app.setViewModelFactory(ViewModelFactory(downloadImageUseCase, loadFileUseCase))
-        Builder().apply {
+        MarkdownViewBuilder().apply {
             setDownloadImageUseCase(downloadImageUseCase)
             app.setBuilder(this)
         }
