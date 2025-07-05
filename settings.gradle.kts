@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Markdown"
 include(":app")
- 
+include(":net")
+include(":cache")
+include(":analysis")

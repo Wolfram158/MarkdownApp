@@ -22,15 +22,15 @@ import android.widget.TableRow
 import android.widget.TextView
 import com.vk.markdown.R
 import com.vk.markdown.domain.usecase.DownloadImageUseCase
-import com.vk.markdown.parser.Bold
-import com.vk.markdown.parser.Cursive
-import com.vk.markdown.parser.Header
-import com.vk.markdown.parser.Img
-import com.vk.markdown.parser.Node
-import com.vk.markdown.parser.Strike
-import com.vk.markdown.parser.Table
-import com.vk.markdown.parser.Text
-import com.vk.markdown.parser.parse
+import com.vk.analysis.parser.Bold
+import com.vk.analysis.parser.Cursive
+import com.vk.analysis.parser.Header
+import com.vk.analysis.parser.Img
+import com.vk.analysis.parser.Node
+import com.vk.analysis.parser.Strike
+import com.vk.analysis.parser.Table
+import com.vk.analysis.parser.Text
+import com.vk.analysis.parser.parse
 import kotlin.concurrent.thread
 
 class MarkdownViewBuilder() {

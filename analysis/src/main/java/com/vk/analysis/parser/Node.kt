@@ -1,4 +1,4 @@
-package com.vk.markdown.parser
+package com.vk.analysis.parser
 
 sealed class Node {
     var content: List<Node> = listOf()

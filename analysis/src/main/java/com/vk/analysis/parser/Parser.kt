@@ -1,4 +1,4 @@
-package com.vk.markdown.parser
+package com.vk.analysis.parser
 
 import java.util.Collections.addAll
 

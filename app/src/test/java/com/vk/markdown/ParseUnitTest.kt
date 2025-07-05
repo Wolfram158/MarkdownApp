@@ -1,13 +1,13 @@
 package com.vk.markdown
 
-import com.vk.markdown.parser.Bold
-import com.vk.markdown.parser.Cursive
-import com.vk.markdown.parser.Header
-import com.vk.markdown.parser.Img
-import com.vk.markdown.parser.Strike
-import com.vk.markdown.parser.Table
-import com.vk.markdown.parser.Text
-import com.vk.markdown.parser.parse
+import com.vk.analysis.parser.Bold
+import com.vk.analysis.parser.Cursive
+import com.vk.analysis.parser.Header
+import com.vk.analysis.parser.Img
+import com.vk.analysis.parser.Strike
+import com.vk.analysis.parser.Table
+import com.vk.analysis.parser.Text
+import com.vk.analysis.parser.parse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -22,7 +22,7 @@ class ParseUnitTest {
             listOf(Bold().apply {
                 content = listOf(Text("hello"))
             }),
-            parse("**hello***")
+            parse("**hello**")
         )
     }
 

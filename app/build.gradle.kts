@@ -40,6 +40,9 @@ android {
 
 dependencies {
 
+    implementation(project(":net"))
+    implementation(project(":analysis"))
+    implementation(project(":cache"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

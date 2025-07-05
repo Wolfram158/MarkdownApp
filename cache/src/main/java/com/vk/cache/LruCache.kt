@@ -1,4 +1,4 @@
-package com.vk.markdown.cache
+package com.vk.cache
 
 class LruCache<K : Any, V : Any>(private val capacity: Int) : Cache<K, V> {
     private class Node<K, V>(var key: K?, var value: V?) {

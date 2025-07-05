@@ -1,7 +1,7 @@
 package com.vk.markdown.data.repository
 
 import com.vk.markdown.domain.repository.MarkdownFileRepository
-import com.vk.markdown.net.NetDownloader
+import com.vk.net.NetDownloader
 
 class MarkdownFileRepositoryImpl(
     private val downloader: NetDownloader

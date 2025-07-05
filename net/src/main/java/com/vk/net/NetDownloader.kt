@@ -1,6 +1,6 @@
-package com.vk.markdown.net
+package com.vk.net
 
-import com.vk.markdown.cache.Cache
+import com.vk.cache.Cache
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -25,8 +25,8 @@ class NetDownloader(
         try {
             val url = URL(path)
             connection = url.openConnection() as HttpURLConnection
-            connection.setRequestMethod(method)
-            connection.setReadTimeout(readTimeout)
+            connection.requestMethod = method
+            connection.readTimeout = readTimeout
             connection.connect()
             stream = connection.getInputStream()
             val ba = stream?.readBytes()
