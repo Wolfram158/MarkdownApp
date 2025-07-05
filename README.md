@@ -16,3 +16,9 @@
 ## Некоторые факты
 1. Для скачивания изображений используется [Thread](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.concurrent/thread.html). Возможно, лучше использовать [ExecutorService](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html), чтобы контролировать количество используемых потоков (в документе может оказаться много изображений, их одновременное скачивание может привести к неприятным последствиям).
 2. Можно было попробовать не строить лес, который может состоять из достаточно больших деревьев, а строить "плоский" лес, состоящий из небольших деревьев, причём элементы размещать в [RecyclerView](https://developer.android.google.cn/reference/kotlin/androidx/recyclerview/widget/RecyclerView). Это позволило бы уменьшить вложенность View. Однако текущий подход позволяет (теоретически) реализовать возможность сворачивать текст, относящийся к заголовку, в режиме просмотра документа.
+3. Используется самописный кеш, хотя можно было попробовать воспользоваться кешем из [android.util](https://developer.android.com/reference/android/util/LruCache).
+## Примеры
+Можно рассмотреть работу приложения на следующих примерах:
+1. https://raw.githubusercontent.com/Wolfram158/MarkdownApp/main/README.md
+2. https://raw.githubusercontent.com/Wolfram158/MarkdownApp/main/samples/1.md
+3. https://raw.githubusercontent.com/Wolfram158/MarkdownApp/main/samples/2.md
