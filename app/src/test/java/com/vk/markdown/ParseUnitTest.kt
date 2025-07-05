@@ -22,7 +22,7 @@ class ParseUnitTest {
             listOf(Bold().apply {
                 content = listOf(Text("hello"))
             }),
-            parse("**hello**")
+            parse("**hello***")
         )
     }
 
