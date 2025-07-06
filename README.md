@@ -22,3 +22,4 @@
 1. https://raw.githubusercontent.com/Wolfram158/MarkdownApp/main/README.md
 2. https://raw.githubusercontent.com/Wolfram158/MarkdownApp/main/samples/1.md
 3. https://raw.githubusercontent.com/Wolfram158/MarkdownApp/main/samples/2.md
+4. https://raw.githubusercontent.com/yandex/yatagan/refs/heads/main/README.md

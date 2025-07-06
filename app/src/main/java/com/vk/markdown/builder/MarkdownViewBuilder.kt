@@ -15,13 +15,13 @@ import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import com.vk.markdown.R
-import com.vk.markdown.domain.usecase.DownloadImageUseCase
+import androidx.core.view.children
 import com.vk.analysis.parser.Bold
 import com.vk.analysis.parser.Cursive
 import com.vk.analysis.parser.Header
@@ -31,6 +31,8 @@ import com.vk.analysis.parser.Strike
 import com.vk.analysis.parser.Table
 import com.vk.analysis.parser.Text
 import com.vk.analysis.parser.parse
+import com.vk.markdown.R
+import com.vk.markdown.domain.usecase.DownloadImageUseCase
 import kotlin.concurrent.thread
 
 class MarkdownViewBuilder() {
@@ -50,8 +52,59 @@ class MarkdownViewBuilder() {
         mapOf(1 to 24, 2 to 22, 3 to 20, 4 to 18, 5 to 16, 6 to 14).mapValues { it.value * 2 }
 
     fun buildFromString(str: String, root: ViewGroup) {
+        var ssb = SpannableStringBuilder()
         parse(str).forEach { node ->
-            root.addView(buildFromNode(node, false, false, false))
+            val view = buildFromNode(node, false, false, false)
+            if (view is TextView) {
+                ssb.append((view.text as? Spanned) ?: view.text)
+            } else {
+                addViewIfIsNotEmpty(ssb, root)
+                root.addView(view)
+            }
+        }
+        addViewIfIsNotEmpty(ssb, root)
+        makeTablesScrollable(root)
+    }
+
+    private fun makeTablesScrollable(root: ViewGroup) {
+        root.children.forEachIndexed { i, view ->
+            if (view is TableLayout) {
+                root.removeView(view)
+                HorizontalScrollView(context).apply {
+                    layoutParams =
+                        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+                    addView(view)
+                    root.addView(this, i)
+                }
+            } else if (view is ViewGroup) {
+                makeTablesScrollable(view)
+            }
+        }
+    }
+
+    private fun addViewIfIsNotEmpty(ssb: SpannableStringBuilder, root: ViewGroup) {
+        if (ssb.isNotEmpty()) {
+            root.addView(TextView(context).apply {
+                text = SpannableString.valueOf(ssb)
+                layoutParams =
+                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            })
+            ssb.clearSpans()
+            ssb.clear()
+        }
+    }
+
+    private fun addViewIfIsNotEmpty(ssb: SpannableStringBuilder, built: MutableList<View>) {
+        if (ssb.isNotEmpty()) {
+            built.add(
+                TextView(context).apply {
+                    text = SpannableString.valueOf(ssb)
+                    layoutParams =
+                        LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                }
+            )
+            ssb.clearSpans()
+            ssb.clear()
         }
     }
 
@@ -75,32 +128,14 @@ class MarkdownViewBuilder() {
             if (view is TextView) {
                 ssb.append((view.text as? Spanned) ?: view.text)
             } else {
-                if (ssb.isNotEmpty()) {
-                    built.add(
-                        TextView(context).apply {
-                            text = SpannableString.valueOf(ssb)
-                            layoutParams =
-                                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                        }
-                    )
-                    ssb = SpannableStringBuilder()
-                }
+                addViewIfIsNotEmpty(ssb, built)
                 built.add(view.apply {
                     layoutParams =
                         LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 })
             }
             if (i == nodes.size - 1) {
-                if (ssb.isNotEmpty()) {
-                    built.add(
-                        TextView(context).apply {
-                            text = SpannableString.valueOf(ssb)
-                            layoutParams =
-                                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                        }
-                    )
-                    ssb = SpannableStringBuilder()
-                }
+                addViewIfIsNotEmpty(ssb, built)
             }
         }
         return built
